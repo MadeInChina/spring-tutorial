@@ -14,7 +14,6 @@ class NotificationResource(private val sinks: Sinks.Many<Notification>) {
     @SubscriptionMapping(value = "notification")
     fun notification(@ContextValue(required = true) userId: String): Flux<Notification> {
         sinks.tryEmitNext(Notification(userId, "some-notification"))
-        sinks.tryEmitComplete()
         return sinks.asFlux()
     }
 }

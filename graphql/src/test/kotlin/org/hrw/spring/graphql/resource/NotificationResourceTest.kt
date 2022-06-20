@@ -50,8 +50,6 @@ class NotificationResourceTest {
         StepVerifier.create(response)
             .expectSubscription()
             .expectNext(Notification(id = "some-user-id", message = "some-notification"))
-            .verifyComplete()
-
         sinks.tryEmitComplete()
     }
 
