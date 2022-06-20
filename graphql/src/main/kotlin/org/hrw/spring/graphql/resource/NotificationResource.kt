@@ -13,8 +13,7 @@ import reactor.core.publisher.Sinks
 class NotificationResource(private val sinks: Sinks.Many<Notification>) {
     @SubscriptionMapping(value = "notification")
     fun notification(@ContextValue(required = true) userId: String): Flux<Notification> {
-        sinks.tryEmitNext(Notification(userId, "some-notification"))
-        return sinks.asFlux()
+        return sinks.asFlux().map { Notification(userId, "some-notification") }
     }
 }
 

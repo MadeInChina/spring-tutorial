@@ -46,11 +46,14 @@ class NotificationResourceTest {
                 .executeSubscription()
                 .toFlux("notification", Notification::class.java)
 
+        sinks.tryEmitNext(Notification(id = "some-id", message = "some-notification"))
+        sinks.tryEmitComplete()
         // Then
         StepVerifier.create(response)
             .expectSubscription()
             .expectNext(Notification(id = "some-user-id", message = "some-notification"))
-        sinks.tryEmitComplete()
+            .verifyComplete()
+
     }
 
     internal class MyInstrumentation : SimpleInstrumentation() {
