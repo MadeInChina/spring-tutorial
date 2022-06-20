@@ -1,0 +1,15 @@
+type Query {
+    getNotifications(
+        userId: ID!
+    ): [Notification]
+}
+
+type Subscription {
+    notification: Notification!
+}
+
+type Notification {
+    "id of the notification"
+    id: ID
+    message: String!
+}
