@@ -1,0 +1,11 @@
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+    path: /graphql
+    schema:
+      locations: classpath:graphql/**
+      printer:
+        enabled: true
+    websocket:
+      path: /graphql
