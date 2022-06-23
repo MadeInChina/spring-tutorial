@@ -1,6 +1,7 @@
 package org.hrw.spring.graphql.resource
 
 import org.hrw.spring.graphql.resource.response.Notification
+import org.hrw.spring.graphql.resource.response.User
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.graphql.data.method.annotation.ContextValue
@@ -13,7 +14,7 @@ import reactor.core.publisher.Sinks
 class NotificationResource(private val sinks: Sinks.Many<Notification>) {
     @SubscriptionMapping(value = "notification")
     fun notification(@ContextValue(required = true) userId: String): Flux<Notification> {
-        return sinks.asFlux().map { Notification(userId, "some-notification") }
+        return sinks.asFlux().map { Notification(userId, it.message, it.user) }
     }
 }
 

@@ -4,6 +4,7 @@ import graphql.ExecutionInput
 import graphql.execution.instrumentation.SimpleInstrumentation
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters
 import org.hrw.spring.graphql.resource.response.Notification
+import org.hrw.spring.graphql.resource.response.User
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
@@ -36,6 +37,10 @@ class NotificationResourceTest {
                 notification {
                     id
                     message
+                    user {
+                        id
+                        name
+                    }
                 }
             }
             """
@@ -46,12 +51,24 @@ class NotificationResourceTest {
                 .executeSubscription()
                 .toFlux("notification", Notification::class.java)
 
-        sinks.tryEmitNext(Notification(id = "some-id", message = "some-notification"))
+        sinks.tryEmitNext(
+            Notification(
+                id = "some-id",
+                message = "some-notification",
+                user = User(id = "some-user-id", name = "some-user-name")
+            )
+        )
         sinks.tryEmitComplete()
         // Then
         StepVerifier.create(response)
             .expectSubscription()
-            .expectNext(Notification(id = "some-user-id", message = "some-notification"))
+            .expectNext(
+                Notification(
+                    id = "some-user-id",
+                    message = "some-notification",
+                    user = User(id = "some-user-id", name = "some-user-name")
+                )
+            )
             .verifyComplete()
 
     }

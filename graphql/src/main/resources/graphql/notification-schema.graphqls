@@ -12,4 +12,5 @@ type Notification {
     "id of the notification"
     id: ID
     message: String!
+    user: User
 }
